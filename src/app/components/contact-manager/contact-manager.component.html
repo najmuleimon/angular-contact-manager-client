@@ -1,0 +1,108 @@
+<!-- heading and form for search -->
+<section class="mt-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="d-flex gap-3 align-items-center">
+          <h3 class="text-danger">Contacts</h3>
+          <button class="btn btn-danger btn-sm" routerLink="/contacts/add"><i class="fa fa-plus-circle me-1"></i>
+            New</button>
+        </div>
+        <p class="fst-italic">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam consequuntur mollitia
+          tempore ipsam dolorum voluptate quam, saepe eos rem iure?</p>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="input-group">
+              <input class="form-control" (keyup)="searchContacts($event)" type="text" placeholder="Search user">
+              <button type="submit" class="btn btn-outline-danger">Search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- loader -->
+<div *ngIf="loading" class="my-2">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <img src="../../../assets/loader.gif" alt="">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- error message -->
+<div *ngIf="!loading && errorMessage">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="text-danger">{{errorMessage}}</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- cards -->
+<section *ngIf="!loading && contacts.length > 0" class="mt-3">
+  <div class="container">
+    <div class="row">
+      <div *ngFor="let contact of contacts" class="col-md-6 mt-2 mb-2">
+        <div class="card list-group-item-danger shadow">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-3">
+                <img class="contact-img" [src]="contact.photo" alt="">
+              </div>
+              <div class="col-md-7">
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    Name: <span class="fw-bold">{{contact.name}}</span>
+                  </li>
+                  <li class="list-group-item">
+                    Email: <span class="fw-bold">{{contact.email}}</span>
+                  </li>
+                  <li class="list-group-item">
+                    Mobile: <span class="fw-bold">{{contact.mobile}}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-2">
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                  <button class="btn btn-warning my-1" routerLink="/contacts/view/{{contact.id}}"><i
+                      class="fa fa-eye"></i></button>
+                  <button class="btn btn-primary my-1" routerLink="/contacts/edit/{{contact.id}}"><i
+                      class="fa fa-pen"></i></button>
+                  <button (click)="deleteModalFunc(contact)" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-danger my-1"><i class="fa fa-trash-alt"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-danger" id="exampleModalLabel">Are you sure want to delete <span class="fw-bold">{{contact.name}}</span>?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Delete {{contact.name}} will remove all the information of {{contact.name}} from your contacts.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="deleteContact()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
